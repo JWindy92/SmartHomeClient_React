@@ -1,0 +1,14 @@
+.navbar {
+    display: flex;
+    align-items: center;
+    height: 75px;
+    padding-left: 50px;
+    background-color: #bbb;
+}
+
+.navbar a {
+    color: black;
+    text-decoration: none;
+    padding: 20px;
+}
+

@@ -1,0 +1,21 @@
+.toggle-card {
+    box-shadow: 1px 1px 4px #ccc;
+    background-color: #fff;
+    border-radius: 5px;
+    display: grid;
+    grid-template-rows: 40% 60%;
+    margin: 5px;
+    height: 150px;
+    width: 125px;
+}
+
+.toggle-card p {
+    grid-row: 1 / 2;
+    margin: auto;
+    padding-top: 25px;
+}
+
+.toggle-card .switch {
+    grid-row: 2 / 3;
+    margin: auto;
+}

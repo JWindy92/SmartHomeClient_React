@@ -1,0 +1,35 @@
+.formContainer {
+    border: 1px solid black;
+    border-radius: 5px;
+    width: 55vw;
+    margin: auto;
+    height: 500px;
+    padding: 20px 50px 20px 50px;
+}
+
+.formHeader {
+    margin-left: 30px;
+    font-size: 22px;
+}
+
+.formElement {
+    width: 80%;
+    margin: auto;
+    padding: 50px;
+    display: grid;
+    grid-template-columns: 30% auto;
+    grid-template-rows: repeat(4, 25px);
+    grid-gap: 2px;
+}
+
+.form-label {
+    grid-column: 1;
+}
+
+.form-input {
+    grid-column: 2;
+}
+
+.submit-btn {
+    grid-column: 2;
+}

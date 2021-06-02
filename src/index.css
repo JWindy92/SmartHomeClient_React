@@ -11,3 +11,9 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.device-card {
+  border: 1px solid black;
+  height: 150px;
+  width: 100px;
+}
