@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from "react";
 import ToggleCard from "./components/deviceDisplays"
 import NewDeviceForm, {TestForm} from "./components/forms"
+import {AdminBtn} from "./components/buttons"
 import "./index.css"
 import "./base.css"
 import "./styles/dashboard.css"
@@ -91,6 +92,7 @@ class Navbar extends Component {
           <nav className="navbar">
               <Link to="/">Home</Link>
               <Link to="/add_device">Add Device</Link>
+              <AdminBtn />
           </nav>
 
           <Switch>
