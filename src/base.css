@@ -12,3 +12,10 @@
     padding: 20px;
 }
 
+.navbar .nav-btn {
+    color: black;
+    text-decoration: none;
+    padding: 20px;
+    cursor: pointer;
+}
+

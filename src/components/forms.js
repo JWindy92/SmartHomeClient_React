@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from 'react';
 import axios from 'axios';
 import "../styles/forms.css"
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
+// import { BrowserRouter as Redirect } from "react-router-dom";
+
 
 class NewDeviceForm extends Component {
 
@@ -53,10 +54,9 @@ class NewDeviceForm extends Component {
         }
         console.log("Submitting")
         axios.post("http://localhost:3001/add_device", data).then((res) => {
-            if (res.status == 201) {
-                console.log("redirecting")
+            if (res.status === 201) {
                 return (
-                    <Redirect to="/dashboard"></Redirect>
+                    this.props.onSuccess()
                 )
                 
             }

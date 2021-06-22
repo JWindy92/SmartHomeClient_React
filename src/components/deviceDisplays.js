@@ -7,17 +7,19 @@ class ToggleCard extends Component {
     // eslint-disable-next-line
     constructor(props) {
       super(props)
+      this.state = {
+        admin_mode: this.props.admin_mode
+      }
     }
 
     render() {
       return (
         <div className="toggle-card">
-          <p className="name">{this.props.name}</p>
+          <p className="name">{this.props.admin_mode ? this.props.name + "!" : this.props.name}</p>
           <ToggleSwitch {...this.props}/>
         </div>
       )
     }
-
 
 }
 

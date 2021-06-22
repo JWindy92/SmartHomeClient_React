@@ -1,27 +1,28 @@
 import React, { Component, Fragment } from "react";
 import ToggleCard from "./components/deviceDisplays"
-import NewDeviceForm, {TestForm} from "./components/forms"
+import NewDeviceForm from "./components/forms"
+import {ModalTrigger} from "./components/modal"
 import {AdminBtn} from "./components/buttons"
 import "./index.css"
 import "./base.css"
 import "./styles/dashboard.css"
 import "./styles/displays.css"
 
-import { BrowserRouter as Router, Route, Link, Switch, Redirect } from "react-router-dom";
+// import { BrowserRouter as Redirect } from "react-router-dom";
 
 export default function App() {
 
   return (
-    <Navbar />
+    <Dashboard />
   )
 
 }
 
-const Home = () => {
-  return (
-    <Redirect to="/dashboard"></Redirect>
-  )
-}
+// const Home = () => {
+//   return (
+//     <Redirect to="/dashboard"></Redirect>
+//   )
+// }
 
 class Dashboard extends Component {
 
@@ -29,16 +30,34 @@ class Dashboard extends Component {
     super(props)
     this.state = {
       devices: [],
-      displays: []
+      displays: [],
+      admin_mode: false
     }
   }
 
   componentDidMount() {
     this.loadDevices()
   }
-  //TODO: fetch seems to be running twice, figure out why
-  loadDevices() {
-    console.log("loading")
+
+  toggle_admin_mode = () => {
+    let prev_val = this.state.admin_mode
+    this.setState({ 
+      admin_mode: !prev_val,
+    })
+    this.refreshDisplays(!prev_val)
+  }
+
+  refreshDisplays = (admin_mode) => {
+    let new_displays = []
+    this.state.devices.forEach((device) => {
+      new_displays.push(<ToggleCard admin_mode={admin_mode} key={device._id} {...device} />)
+    })
+    this.setState({
+      displays: new_displays
+    })
+  }
+
+  loadDevices = () => {
     fetch("http://localhost:3001/devices/")
       .then(res => res.json())
       .then(
@@ -47,11 +66,11 @@ class Dashboard extends Component {
           let new_displays = []
           result.forEach((elm) => {
             new_devices.push(elm)
-            new_displays.push(<ToggleCard key={elm._id} {...elm} />)
-            this.setState({
-              devices: new_devices,
-              displays: new_displays
-            })
+            new_displays.push(<ToggleCard admin_mode={this.state.admin_mode} key={elm._id} {...elm} />)
+          })
+          this.setState({
+            devices: new_devices,
+            displays: new_displays
           })
         }
       )  
@@ -63,48 +82,55 @@ class Dashboard extends Component {
   }
 
   render() {
-
     return (
-      <div className='dashboard'>
-        { this.state.displays }
-      </div>
+      <Fragment>
+        <Navbar toggle_admin_mode={this.toggle_admin_mode}/>
+        <div className='dashboard'>
+          { this.state.displays }
+        </div>
+      </Fragment>
     )
   }
 
-}
-
-
-const AddDevice = () => {
-  return (
-    <Fragment>
-      <h1>Add Device</h1>
-      <NewDeviceForm />
-    </Fragment>
-  )
 }
 
 class Navbar extends Component {
 
   render() {
     return (
-      <Router>
         <div>
           <nav className="navbar">
-              <Link to="/">Home</Link>
-              <Link to="/add_device">Add Device</Link>
-              <AdminBtn />
+              <div className="nav-btn">Home</div>
+              <ModalTrigger className="nav-btn" content={NewDeviceForm} text="Add Device"/>
+              <AdminBtn toggle_admin_mode={this.props.toggle_admin_mode}/>
           </nav>
-
-          <Switch>
-            <Route path="/" exact component={Home}></Route>
-            <Route path="/dashboard" exact component={Dashboard}></Route>
-            <Route path="/add_device" component={AddDevice}></Route>
-            <Route render={() => <h1>404: page not found</h1>} />
-          </Switch>
         </div>
-      </Router>
     )
   }
 
 }
 
+// class Navbar extends Component {
+
+//   render() {
+//     return (
+//       <Router>
+//         <div>
+//           <nav className="navbar">
+//               <Link to="/">Home</Link>
+//               <ModalTrigger className="nav-btn" content={NewDeviceForm} text="Add Device"/>
+//               <AdminBtn />
+//           </nav>
+
+//           <Switch>
+//             <Route path="/" exact component={Home}></Route>
+//             <Route path="/dashboard" exact component={Dashboard}></Route>
+//             <Route path="/add_device" component={AddDevice}></Route>
+//             <Route render={() => <h1>404: page not found</h1>} />
+//           </Switch>
+//         </div>
+//       </Router>
+//     )
+//   }
+
+// }

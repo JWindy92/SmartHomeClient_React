@@ -1,7 +1,5 @@
 .formContainer {
-    border: 1px solid black;
-    border-radius: 5px;
-    width: 55vw;
+    width: 75%;
     margin: auto;
     height: 500px;
     padding: 20px 50px 20px 50px;
