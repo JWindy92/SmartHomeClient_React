@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import "../styles/toggles.css"
+import { AiFillEdit } from "react-icons/ai"
 
 class ToggleCard extends Component {
 
@@ -11,11 +12,21 @@ class ToggleCard extends Component {
         admin_mode: this.props.admin_mode
       }
     }
+    
+    showEditForm = () => {
+      this.props.showModal("EditDevice")
+    }
 
     render() {
       return (
-        <div className="toggle-card">
-          <p className="name">{this.props.admin_mode ? this.props.name + "!" : this.props.name}</p>
+        <div className={this.props.admin_mode ? "toggle-card editable" : "toggle-card"}>
+          <i 
+            className={this.props.admin_mode ? "edit-device-btn" : "edit-device-btn hidden"}
+            onClick={this.showEditForm}
+          >
+            <AiFillEdit/>
+          </i>
+          <p className="name">{this.props.name}</p>
           <ToggleSwitch {...this.props}/>
         </div>
       )

@@ -1,7 +1,8 @@
 import React, { Component, Fragment } from "react";
 import ToggleCard from "./components/deviceDisplays"
 import NewDeviceForm from "./components/forms"
-import {ModalTrigger} from "./components/modal"
+//! import {ModalTrigger} from "./components/modal"
+import Modal from './components/modal'
 import {AdminBtn} from "./components/buttons"
 import "./index.css"
 import "./base.css"
@@ -31,8 +32,29 @@ class Dashboard extends Component {
     this.state = {
       devices: [],
       displays: [],
-      admin_mode: false
+      admin_mode: false,
+      modal_content: <p>Default</p>,
+      showModal: false
     }
+    this.showModal = this.showModal.bind(this)
+    this.hideModal = this.hideModal.bind(this)
+  }
+
+  showModal = (content) => {
+    //TODO: Is this really the best way to do this?
+    let modal_dict = {
+      NewDevice : <NewDeviceForm />,
+      EditDevice: <p>Edit Device</p>
+    }
+
+    this.setState({
+      modal_content: modal_dict[content],
+      showModal: true 
+    })
+  }
+
+  hideModal = () => {
+    this.setState({ showModal: false})
   }
 
   componentDidMount() {
@@ -50,7 +72,7 @@ class Dashboard extends Component {
   refreshDisplays = (admin_mode) => {
     let new_displays = []
     this.state.devices.forEach((device) => {
-      new_displays.push(<ToggleCard admin_mode={admin_mode} key={device._id} {...device} />)
+      new_displays.push(<ToggleCard showModal={this.showModal} admin_mode={admin_mode} key={device._id} {...device} />)
     })
     this.setState({
       displays: new_displays
@@ -66,7 +88,7 @@ class Dashboard extends Component {
           let new_displays = []
           result.forEach((elm) => {
             new_devices.push(elm)
-            new_displays.push(<ToggleCard admin_mode={this.state.admin_mode} key={elm._id} {...elm} />)
+            new_displays.push(<ToggleCard modalContent={<p>Hello</p>} showModal={this.showModal} admin_mode={this.state.admin_mode} key={elm._id} {...elm} />)
           })
           this.setState({
             devices: new_devices,
@@ -84,8 +106,9 @@ class Dashboard extends Component {
   render() {
     return (
       <Fragment>
-        <Navbar toggle_admin_mode={this.toggle_admin_mode}/>
+        <Navbar showModal={this.showModal} toggle_admin_mode={this.toggle_admin_mode}/>
         <div className='dashboard'>
+          <Modal content={this.state.modal_content} show={this.state.showModal} handleClose={this.hideModal}></Modal>
           { this.state.displays }
         </div>
       </Fragment>
@@ -96,12 +119,21 @@ class Dashboard extends Component {
 
 class Navbar extends Component {
 
+  constructor(props) {
+    super(props);
+  }
+
+  showNewDeviceForm = () => {
+    this.props.showModal("NewDevice")
+  }
+
   render() {
     return (
         <div>
           <nav className="navbar">
               <div className="nav-btn">Home</div>
-              <ModalTrigger className="nav-btn" content={NewDeviceForm} text="Add Device"/>
+              <div className="nav-btn" onClick={this.showNewDeviceForm}>Add Device</div>
+              {/* <ModalTrigger className="nav-btn" content={NewDeviceForm} text="Add Device"/> */}
               <AdminBtn toggle_admin_mode={this.props.toggle_admin_mode}/>
           </nav>
         </div>
@@ -109,28 +141,3 @@ class Navbar extends Component {
   }
 
 }
-
-// class Navbar extends Component {
-
-//   render() {
-//     return (
-//       <Router>
-//         <div>
-//           <nav className="navbar">
-//               <Link to="/">Home</Link>
-//               <ModalTrigger className="nav-btn" content={NewDeviceForm} text="Add Device"/>
-//               <AdminBtn />
-//           </nav>
-
-//           <Switch>
-//             <Route path="/" exact component={Home}></Route>
-//             <Route path="/dashboard" exact component={Dashboard}></Route>
-//             <Route path="/add_device" component={AddDevice}></Route>
-//             <Route render={() => <h1>404: page not found</h1>} />
-//           </Switch>
-//         </div>
-//       </Router>
-//     )
-//   }
-
-// }

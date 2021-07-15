@@ -7,6 +7,12 @@
     margin: 5px;
     height: 150px;
     width: 125px;
+    position: relative;
+    transition: box-shadow 0.2s ease-in-out;
+}
+
+.editable {
+    box-shadow: 1px 1px 6px rgba(33, 150, 243, 0.5);
 }
 
 .toggle-card p {
@@ -18,4 +24,20 @@
 .toggle-card .switch {
     grid-row: 2 / 3;
     margin: auto;
+}
+
+.edit-device-btn {
+    position: absolute;
+    text-align: center;
+    color: #ccc;
+    line-height: 35px;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    right: 0;
+    top: 0;
+}
+
+.edit-device-btn:hover {
+    color: #999;
 }
