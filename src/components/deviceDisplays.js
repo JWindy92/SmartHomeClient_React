@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import "../styles/toggles.css"
 import { AiFillEdit } from "react-icons/ai"
+import EditDeviceForm from "./forms"
 
 class ToggleCard extends Component {
 

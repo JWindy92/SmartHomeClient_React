@@ -39,31 +39,24 @@ class NewDeviceForm extends Component {
         })
     }
 
+    // Sends form data to the API to save a device to the database
     submitDevice = () => {
-        
-        //TODO: This should all be done by the 'service' on the API server, as these specs would not be apparent to a user of the API
-        let data = {
-            name: this.state.form_data.Name,
-            addr: this.state.form_data['IP Address'],
-            topic: this.state.form_data['MQTT Topic'],
-            type: this.state.current_device,
-            state: {
-                power: false
-            },
-            protocol: 'mqtt'
-        }
-        console.log("Submitting")
-        axios.post("http://localhost:3001/add_device", data).then((res) => {
+        this.state.form_data['type'] = this.state.current_device
+        axios.post("http://localhost:3001/devices/new", this.state.form_data).then((res) => {
             if (res.status === 201) {
                 return (
-                    this.props.onSuccess()
+                    console.log('success')
                 )
-                
             }
+        }).catch((err) => {
+            console.error(err)
         })
     }
 
+    // Updates the state to match the user input so it is available
+    // when the user submits the form
     updateFormData = (e) => {
+        console.log("Here")
         let new_data = this.state.form_data
         new_data[e.target.name] = e.target.value
         this.setState({
@@ -71,6 +64,8 @@ class NewDeviceForm extends Component {
         })
     }
 
+    // Updates the current_device to the selection in the dropdown
+    // and clears the data so the appropriate fields are shown
     setCurrentDevice = (e) => {
         this.setState({
             current_device: e.target.value,
